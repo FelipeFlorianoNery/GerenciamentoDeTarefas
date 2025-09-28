@@ -5,8 +5,10 @@ import com.felipenery.gerenciamentotarefas.gerenciamento_tarefas.repository.Tare
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -53,7 +55,22 @@ public class TarefaService {
             return tarefaDeletada;
     }
 
-    public List<Tarefa> listarTodas(){
-            return this.tarefaRepository.encontrarTodas();
+
+    public List<Tarefa> listarTodas(String status,  String ordenarPor){
+            List<Tarefa> tarefas =  this.tarefaRepository.encontrarTodas();
+            Stream<Tarefa> tarefasAtuais = tarefas.stream();
+
+            if(status != null && !status.isBlank()){
+                tarefasAtuais = tarefasAtuais.filter(
+                        tarefa -> tarefa.getStatusParaJson().equalsIgnoreCase(status));
+            } else if ("status".equalsIgnoreCase(ordenarPor)) {
+                tarefasAtuais = tarefasAtuais.sorted(Comparator.comparing(Tarefa::getStatusParaJson));
+
+            }
+
+        if("dataDeCriação".equalsIgnoreCase(ordenarPor)){
+                tarefasAtuais = tarefasAtuais.sorted(Comparator.comparing(Tarefa::getDataDeCriacao));
+            }
+            return tarefasAtuais.collect(Collectors.toList());
     }
 }

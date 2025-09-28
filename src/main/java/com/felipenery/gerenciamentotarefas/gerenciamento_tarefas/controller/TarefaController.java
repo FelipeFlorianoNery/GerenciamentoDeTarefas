@@ -5,7 +5,6 @@ import com.felipenery.gerenciamentotarefas.gerenciamento_tarefas.service.TarefaS
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,8 +19,11 @@ public class TarefaController {
     }
 
     @GetMapping
-    public List<Tarefa> listarTodas(){
-        return tarefaService.listarTodas();
+    public List<Tarefa> listarTodas(
+            @RequestParam(value ="status", required = false) String status,
+            @RequestParam(value = "ordenarPor", required = false) String ordenarPor
+    ){
+        return tarefaService.listarTodas(status,ordenarPor);
     }
 
     @PostMapping
