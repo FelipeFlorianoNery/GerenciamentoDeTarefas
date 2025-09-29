@@ -50,7 +50,7 @@ public class Tarefa {
     }
 
     public void setStatus(String statusTexto) {
-        this.concluida = "Concluído".equalsIgnoreCase(statusTexto);
+        this.concluida = "Concluído".equalsIgnoreCase(statusTexto) || "Concluido".equalsIgnoreCase(statusTexto);
     }
 
     @JsonProperty("status")

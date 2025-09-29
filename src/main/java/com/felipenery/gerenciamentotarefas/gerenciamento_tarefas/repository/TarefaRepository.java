@@ -15,21 +15,26 @@ import java.util.List;
 public class TarefaRepository {
 
     private static final String CAMINHO_ARQUIVO = "tarefas.json";
-    private final ObjectMapper objectmapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
+
+    public TarefaRepository(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public List<Tarefa> encontrarTodas(){
 try{
-    return objectmapper.readValue(new File(CAMINHO_ARQUIVO),
+    return objectMapper.readValue(new File(CAMINHO_ARQUIVO),
             new TypeReference<List<Tarefa>>() {});
 
     } catch (IOException e) {
+      e.printStackTrace();
       return new ArrayList<>();
     }
 }
 
     public void salvarTodas(List<Tarefa> tarefas){
     try{
-        objectmapper.writeValue(new File(CAMINHO_ARQUIVO), tarefas);
+        objectMapper.writeValue(new File(CAMINHO_ARQUIVO), tarefas);
     }catch (IOException e){
         e.printStackTrace();
     }

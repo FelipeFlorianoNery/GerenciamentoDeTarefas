@@ -21,7 +21,7 @@ public class TarefaService {
             this.tarefaRepository = tarefaRepository;
         }
 
-        public Tarefa criar(Tarefa novaTarefa){
+    public Tarefa criar(Tarefa novaTarefa){
             novaTarefa.setId(UUID.randomUUID());
             novaTarefa.setDataDeCriacao(LocalDateTime.now());
             List<Tarefa> tarefasAtuais = this.tarefaRepository.encontrarTodas();
@@ -63,12 +63,11 @@ public class TarefaService {
             if(status != null && !status.isBlank()){
                 tarefasAtuais = tarefasAtuais.filter(
                         tarefa -> tarefa.getStatusParaJson().equalsIgnoreCase(status));
-            } else if ("status".equalsIgnoreCase(ordenarPor)) {
-                tarefasAtuais = tarefasAtuais.sorted(Comparator.comparing(Tarefa::getStatusParaJson));
-
             }
 
-        if("dataDeCriação".equalsIgnoreCase(ordenarPor)){
+            if ("status".equalsIgnoreCase(ordenarPor)) {
+                tarefasAtuais = tarefasAtuais.sorted(Comparator.comparing(Tarefa::getStatusParaJson));
+            } else if ("dataDeCriação".equalsIgnoreCase(ordenarPor)){
                 tarefasAtuais = tarefasAtuais.sorted(Comparator.comparing(Tarefa::getDataDeCriacao));
             }
             return tarefasAtuais.collect(Collectors.toList());
