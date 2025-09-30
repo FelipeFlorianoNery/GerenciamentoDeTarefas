@@ -59,7 +59,16 @@ A API estará em execução e acessível em http://localhost:8080.
 
 Os endpoints podem ser testados com qualquer cliente HTTP (Postman, Insomnia) ou diretamente via curl no terminal. Os URLs serão os mesmos para cada método que for usar.
 
+|**MÉTODO**|**URL**|
+| - | - |
+|**POST**|http://localhost:8080/tarefas|
+|**GET**|http://localhost:8080/tarefas|
+|**PUT**|http://localhost:8080/tarefas/{Id}|
+|**DELETE**|http://localhost:8080/tarefas/{Id}|
+
+
 **Observação:** O {id} de uma tarefa é um UUID gerado no momento da criação. Utilize o ID retornado pela operação POST para testar os endpoints PUT e DELETE.
+
 
 **POST /tarefas**
 
@@ -93,6 +102,11 @@ Crie pelo três ou mais tarefas para realizar filtragem e ordenação.
 Lista todas as tarefas. Suporta filtragem por status e ordenação.
 O URL são os mesmos independentemente de qual ferramente utilizar.
 
+|**FILTROS E ORDENAÇÃO**|**URL**|
+| - | - |
+|**GET**|http://localhost:8080/tarefas?status=Pendente|
+|**GET**|http://localhost:8080/tarefas?ordenarPor=dataDeCriacao|
+
 **Query Parameters (Opcionais):**
 
 - status (string): Filtra tarefas pelo status (Pendente ou Concluído).
@@ -114,7 +128,7 @@ O URL são os mesmos independentemente de qual ferramente utilizar.
 - **Ordenar por data de criação:**
 
 ```
-  curl -X GET "http://localhost:8080/tarefas?ordenarPor=dataDeCriação"
+  curl -X GET "http://localhost:8080/tarefas?ordenarPor=dataDeCriacao"
 ```
 
 **PUT /tarefas/{id}**
