@@ -31,8 +31,19 @@ O projeto foi estruturado com foco na separação de responsabilidades (controll
     ```
 
 2.  **Execute a aplicação:**
-    O projeto utiliza o Maven Wrapper para garantir a consistência do ambiente de build.
+    O projeto utiliza o Maven Wrapper para garantir a consistência do ambiente de build. 
+    Antes de tentar executar qualquer coisa, use o comando cd (change directory) para entrar na pasta que o Git acabou de criar.
 
+    ```
+    # O nome da pasta geralmente é o mesmo do repositório
+    cd GerenciamentoDeTarefas
+    ```
+    Após executar este comando, seu terminal deverá indicar que você está dentro da pasta do projeto.
+    ```
+    Por exemplo, o caminho no prompt mudará para algo como ...\GerenciamentoDeTarefas>.
+    ```
+    Agora que você está no diretório correto, onde o arquivo mvnw.cmd está localizado, você pode iniciar a aplicação com o seguinte comando:
+    
     * **Linux/macOS:**
         ```sh
         ./mvnw spring-boot:run
@@ -46,13 +57,13 @@ A API estará em execução e acessível em http://localhost:8080.
 
 **Documentação dos Endpoints (API)**
 
-Os endpoints podem ser testados com qualquer cliente HTTP (Postman, Insomnia) ou diretamente via curl no terminal.
+Os endpoints podem ser testados com qualquer cliente HTTP (Postman, Insomnia) ou diretamente via curl no terminal. Os URLs serão os mesmos para cada método que for usar.
 
 **Observação:** O {id} de uma tarefa é um UUID gerado no momento da criação. Utilize o ID retornado pela operação POST para testar os endpoints PUT e DELETE.
 
 **POST /tarefas**
 
-Cria uma nova tarefa. Necessário criar o "título", "descrição" e "status".
+Cria uma nova tarefa. Necessário criar o "título", "descrição" e "status". Local http://localhost:8080/tarefas
 
 
 **Request Body:**
@@ -78,7 +89,9 @@ curl -X POST http://localhost:8080/tarefas \
 
 **GET /tarefas**
 
+Crie pelo três ou mais tarefas para realizar filtragem e ordenação.
 Lista todas as tarefas. Suporta filtragem por status e ordenação.
+O URL são os mesmos independentemente de qual ferramente utilizar.
 
 **Query Parameters (Opcionais):**
 
