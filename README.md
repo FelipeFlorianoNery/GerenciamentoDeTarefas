@@ -27,8 +27,7 @@ O projeto foi estruturado com foco na separação de responsabilidades (controll
 
 1.  **Clone o repositório:**
     ```sh
-    git clone [https://github.com/felipeflorianonery/GerenciamentoDeTarefas.git](https://github.com/felipeflorianonery/GerenciamentoDeTarefas.git)
-    cd GerenciamentoDeTarefas
+    git clone https://github.com/felipeflorianonery/GerenciamentoDeTarefas.git
     ```
 
 2.  **Execute a aplicação:**
