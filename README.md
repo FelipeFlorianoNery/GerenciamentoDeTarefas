@@ -1,6 +1,6 @@
 **API de Gerenciamento de Tarefas**
 
-API RESTful desenvolvida em Java e Spring Boot para um sistema de gerenciamento de tarefas. A solução implementa um CRUD completo com persistência de dados em um arquivo JSON local, atendendo a todos os requisitos do desafio técnico proposto.
+API REST desenvolvida em Java e Spring Boot para um sistema de gerenciamento de tarefas. A solução implementa um CRUD completo com persistência de dados em um arquivo JSON local, atendendo a todos os requisitos do desafio técnico proposto.
 
 O projeto foi estruturado com foco na separação de responsabilidades (controller, service, repository) e na qualidade do código, incluindo a cobertura de testes unitários para a camada de lógica de negócio.
 
