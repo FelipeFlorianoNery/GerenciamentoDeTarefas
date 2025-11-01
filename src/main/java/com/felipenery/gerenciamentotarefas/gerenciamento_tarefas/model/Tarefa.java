@@ -3,13 +3,21 @@ package com.felipenery.gerenciamentotarefas.gerenciamento_tarefas.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name="tarefas")
+
 public class Tarefa {
 
+    @Id
     private UUID id;
+
     private String titulo;
     private String descricao;
     private boolean concluida;

@@ -12,8 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,7 +46,7 @@ class TarefaServiceTeste {
         novaTarefa.setTitulo("Criando API de Tarefas");
         novaTarefa.setDescricao("Usando o que estou aprendendo e colocando em prática novos conhecimentos");
 
-        when(tarefaRepository.encontrarTodas()).thenReturn(new ArrayList<>());
+        when(tarefaRepository.save(any(Tarefa.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Tarefa tarefaCriada = tarefaService.criar(novaTarefa);
 
@@ -57,21 +56,22 @@ class TarefaServiceTeste {
         assertEquals("Criando API de Tarefas", tarefaCriada.getTitulo());
         assertEquals("Pendente", tarefaCriada.getStatusParaJson());
 
-        ArgumentCaptor<List<Tarefa>> captorDeLista = ArgumentCaptor.forClass(List.class);
-        verify(tarefaRepository, times(1)).salvarTodas(captorDeLista.capture());
-        List<Tarefa> listaSalva = captorDeLista.getValue();
+        ArgumentCaptor<Tarefa> captorDeTarefa = ArgumentCaptor.forClass(Tarefa.class);
 
-        assertEquals(1, listaSalva.size());
-        assertEquals(tarefaCriada, listaSalva.get(0));
+        verify(tarefaRepository, times(1)).save(captorDeTarefa.capture());
+        Tarefa tarefaSalva = captorDeTarefa.getValue();
+
+        assertEquals(1, 1);
+        assertEquals(tarefaCriada, tarefaSalva);
+        assertEquals("Criando API de Tarefas", tarefaSalva.getTitulo());
     }
 
     @Test
     @DisplayName("Deve atualizar uma tarefa existente com sucesso")
     void deveAtualizarTarefa() {
-        List<Tarefa> tarefasAtuais = new ArrayList<>();
-        tarefasAtuais.add(tarefaExemplo);
+        when(tarefaRepository.findById(tarefaExemplo.getId())).thenReturn(Optional.of(tarefaExemplo));
 
-        when(tarefaRepository.encontrarTodas()).thenReturn(tarefasAtuais);
+        when(tarefaRepository.save(any(Tarefa.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Tarefa tarefaEditada = new Tarefa();
         tarefaEditada.setTitulo("Título Atualizado");
@@ -81,16 +81,44 @@ class TarefaServiceTeste {
         Tarefa tarefaRetornada = tarefaService.atualizar(tarefaExemplo.getId(), tarefaEditada);
 
         assertNotNull(tarefaRetornada);
-        assertEquals(tarefaExemplo.getId(), tarefaRetornada.getId()); // O ID não deve mudar
+        assertEquals(tarefaExemplo.getId(), tarefaRetornada.getId());
         assertEquals("Título Atualizado", tarefaRetornada.getTitulo());
         assertEquals("Descrição atualizada.", tarefaRetornada.getDescricao());
         assertEquals("Concluído", tarefaRetornada.getStatusParaJson());
 
-        ArgumentCaptor<List<Tarefa>> captorDeLista = ArgumentCaptor.forClass(List.class);
-        verify(tarefaRepository, times(1)).salvarTodas(captorDeLista.capture());
-        List<Tarefa> listaSalva = captorDeLista.getValue();
+        ArgumentCaptor<Tarefa> captorDeTarefa = ArgumentCaptor.forClass(Tarefa.class);
+        verify(tarefaRepository, times(1)).save(captorDeTarefa.capture());
+        Tarefa listaSalva = captorDeTarefa.getValue();
 
-        assertEquals(1, listaSalva.size());
-        assertEquals("Título Atualizado", listaSalva.get(0).getTitulo());
+        assertEquals(1, 1);
+        assertEquals("Título Atualizado", listaSalva.getTitulo());
+    }
+
+    @Test
+    @DisplayName("Deve deletar uma tarefa com sucesso")
+    void deveDeletarTarefa() {
+        UUID idParaDeletar = tarefaExemplo.getId();
+
+        when(tarefaRepository.existsById(idParaDeletar)).thenReturn(true);
+
+        boolean deletado = tarefaService.deletar(idParaDeletar);
+
+        assertTrue(deletado);
+
+        verify(tarefaRepository, times(1)).deleteById(idParaDeletar);
+    }
+
+    @Test
+    @DisplayName("Não deve deletar tarefa inexistente")
+    void naoDeveDeletarTarefaInexistente() {
+        UUID idInexistente = UUID.randomUUID();
+
+        when(tarefaRepository.existsById(idInexistente)).thenReturn(false);
+
+        boolean deletado = tarefaService.deletar(idInexistente);
+
+        assertFalse(deletado);
+
+        verify(tarefaRepository, never()).deleteById(idInexistente);
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.Optional;
 
 @Service
 
@@ -24,40 +25,35 @@ public class TarefaService {
     public Tarefa criar(Tarefa novaTarefa){
             novaTarefa.setId(UUID.randomUUID());
             novaTarefa.setDataDeCriacao(LocalDateTime.now());
-            List<Tarefa> tarefasAtuais = this.tarefaRepository.encontrarTodas();
-            tarefasAtuais.add(novaTarefa);
-            this.tarefaRepository.salvarTodas(tarefasAtuais);
-            return novaTarefa;
+            return tarefaRepository.save(novaTarefa);
         }
 
     public Tarefa atualizar(UUID id, Tarefa tarefaEditada) {
-        List<Tarefa> tarefasAtuais = this.tarefaRepository.encontrarTodas();
-        for (Tarefa tarefa : tarefasAtuais) {
-            if (tarefa.getId().equals(id)) {
-                tarefa.setTitulo(tarefaEditada.getTitulo());
-                tarefa.setDescricao(tarefaEditada.getDescricao());
-                tarefa.setStatus(tarefaEditada.getStatusParaJson());
-                this.tarefaRepository.salvarTodas(tarefasAtuais);
-                return tarefa;
-            }
+        Optional<Tarefa> tarefaExistenteOpt = tarefaRepository.findById(id);
+
+        if (tarefaExistenteOpt.isEmpty()) {
+            return null; // Ou lançar uma exceção
         }
-        return null;
-    }
+
+        Tarefa tarefaExistente = tarefaExistenteOpt.get();
+        tarefaExistente.setTitulo(tarefaEditada.getTitulo());
+        tarefaExistente.setDescricao(tarefaEditada.getDescricao());
+        tarefaExistente.setStatus(tarefaEditada.getStatusParaJson());
+
+        return tarefaRepository.save(tarefaExistente);
+        }
 
     public boolean deletar(UUID id) {
-            List<Tarefa> tarefaAtuais = this.tarefaRepository.encontrarTodas();
-
-            boolean tarefaDeletada = tarefaAtuais.
-                    removeIf(tarefa -> tarefa.getId().equals(id));
-            if (tarefaDeletada) {
-                this.tarefaRepository.salvarTodas(tarefaAtuais);
-            }
-            return tarefaDeletada;
+        if (tarefaRepository.existsById(id)) {
+            tarefaRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 
     public List<Tarefa> listarTodas(String status,  String ordenarPor){
-            List<Tarefa> tarefas =  this.tarefaRepository.encontrarTodas();
+            List<Tarefa> tarefas = this.tarefaRepository.findAll();
             Stream<Tarefa> tarefasAtuais = tarefas.stream();
 
             if(status != null && !status.isBlank()){
