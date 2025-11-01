@@ -27,7 +27,8 @@ O projeto foi estruturado com foco na separação de responsabilidades (controll
 
 1.  **Clone o repositório:**
     ```sh
-    git clone [https://github.com/felipeflorianonery/GerenciamentoDeTarefas.git](https://github.com/felipeflorianonery/GerenciamentoDeTarefas.git)
+    git clone
+    https://github.com/felipeflorianonery/GerenciamentoDeTarefas.git
     cd GerenciamentoDeTarefas
     ```
 
@@ -44,4 +45,7 @@ O projeto foi estruturado com foco na separação de responsabilidades (controll
     Altere as seguintes linhas com **seu usuário e senha** do PostgreSQL:
     ```properties
     # Verifique se a URL e a porta estão corretas
-    spring.datasource.url=jdbc:postgresql://localhost:5432/gerenci
+    spring.datasource.url=jdbc:postgresql://localhost:5432//gerenciamento_tarefas
+    # Altere com suas credenciais locais
+    spring.datasource.username=postgres
+    spring.datasource.password=sua_senha_aqui
